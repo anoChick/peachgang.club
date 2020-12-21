@@ -1,13 +1,20 @@
 {
   "compilerOptions": {
     "skipLibCheck": true,
-    "strict": true,
+    "strict": false,
     "module": "commonjs",
     "noImplicitReturns": true,
     "noUnusedLocals": true,
     "outDir": "lib",
     "sourceMap": true,
-    "target": "es2017"
+    "target": "es2017",
+    "allowJs": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true
   },
   "compileOnSave": true,
   "include": ["functions"]
