@@ -1,7 +1,7 @@
+import * as functions from 'firebase-functions'
 import next from 'next'
-import functions from 'firebase-functions'
-const NEXT_DIR = '.next'
 
+const NEXT_DIR = '.next'
 const func = functions.region('asia-northeast1')
 
 export const helloWorld = func.https.onRequest((request, response) => {
