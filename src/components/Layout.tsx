@@ -1,6 +1,9 @@
 import React, { ReactNode } from 'react'
 import Head from 'next/head'
 import styled from 'styled-components'
+const Display = styled.div`
+  display: block !important;
+`
 
 type Props = {
   children?: ReactNode
@@ -16,7 +19,7 @@ const Layout = ({ children, title = 'Peach Gang Club' }: Props) => (
       <meta charSet="utf-8" />
       <meta name="viewport" content="initial-scale=1.0, width=device-width" />
     </Head>
-    {children}
+    <Display style={{ display: 'none' }}>{children}</Display>
   </Root>
 )
 

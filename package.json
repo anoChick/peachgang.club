@@ -4,12 +4,12 @@
   "main": "lib/index.js",
   "scripts": {
     "dev": "next",
-    "build": "next build",
+    "build": "next build && tsc -p tsconfig_functions.json",
     "start": "next start",
     "watch": "tsc --watch -p tsconfig_functions.json",
     "serve": "npm run build && npx tsc-watch -p tsconfig_functions.json --onFirstSuccess 'firebase emulators:start --only functions,hosting'",
     "shell": "npm run build && firebase functions:shell",
-    "deploy": "firebase deploy --only functions,hosting",
+    "deploy": "npm run build && firebase deploy --only functions,hosting",
     "lint": "eslint '**/*.{ts,tsx}'",
     "lint:fix": "eslint '**/*.{ts,tsx}' --fix"
   },
