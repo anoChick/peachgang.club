@@ -1,8 +1,10 @@
 import next from 'next'
-import { https } from 'firebase-functions'
+import functions from 'firebase-functions'
 const NEXT_DIR = '.next'
 
-export const helloWorld = https.onRequest((request, response) => {
+const func = functions.region('asia-northeast1')
+
+export const helloWorld = func.https.onRequest((request, response) => {
   response.send('ok')
 })
 
@@ -16,6 +18,6 @@ const nextjsServer = next({
 })
 const nextjsHandle = nextjsServer.getRequestHandler()
 
-exports.nextjsFunc = https.onRequest((req, res) => {
+exports.nextjsFunc = func.https.onRequest((req, res) => {
   return nextjsServer.prepare().then(() => nextjsHandle(req, res))
 })

@@ -4,16 +4,30 @@ import { ServerStyleSheet } from 'styled-components'
 // eslint-disable-next-line @typescript-eslint/ban-types
 type Props = {}
 class Document extends NextDocument<Props> {
-  static async getInitialProps({ renderPage }: DocumentContext) {
+  static async getInitialProps(ctx: DocumentContext) {
     const sheet = new ServerStyleSheet()
+    const originalRenderPage = ctx.renderPage
 
-    const page = renderPage((App) => (props) => sheet.collectStyles(<App {...props} />))
+    try {
+      ctx.renderPage = () =>
+        originalRenderPage({
+          enhanceApp: (App) => (props) => sheet.collectStyles(<App {...props} />),
+        })
 
-    const styleTags = sheet.getStyleElement()
-
-    return { ...page, styleTags }
+      const initialProps = await NextDocument.getInitialProps(ctx)
+      return {
+        ...initialProps,
+        styles: (
+          <>
+            {initialProps.styles}
+            {sheet.getStyleElement()}
+          </>
+        ),
+      }
+    } finally {
+      sheet.seal()
+    }
   }
-
   render() {
     return (
       <Html lang="ja">
