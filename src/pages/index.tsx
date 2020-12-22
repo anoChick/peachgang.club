@@ -39,7 +39,7 @@ const IndexPage: React.FC = () => {
         title={'Peach Gang Club'}
         description={''}
         keyword={'peach gang club 桃'}
-        image={'/images/og_image.png'}
+        image={'images/og_image.png'}
         url={'/'}
       />
       <div>
