@@ -4,6 +4,7 @@ import CommandInput from '../components/CommandInput'
 import { motion } from 'framer-motion'
 
 import Layout from '../components/Layout'
+import AppHead from '../components/AppHead'
 
 const Title = styled.h1`
   font-size: 40px;
@@ -34,6 +35,13 @@ const IndexPage: React.FC = () => {
 
   return (
     <Layout>
+      <AppHead
+        title={'Peach Gang Club'}
+        description={''}
+        keyword={'peach gang club 桃'}
+        image={'/images/og_image.png'}
+        url={'/'}
+      />
       <div>
         <Title>Peach Gang Club</Title>
         <PGButton onClick={handleClickPeachGang}>
