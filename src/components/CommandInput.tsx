@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 
 const Root = styled.div`
@@ -38,13 +38,13 @@ const SubmitButton = styled.button`
 `
 
 type Props = {
-  onSubmit?: (command: string) => void
+  value: string
+  onChange?: (command: string) => void
+  onSubmit?: () => void
 }
-const CommandInput: React.VFC<Props> = ({ onSubmit }) => {
-  const [value, setValue] = useState<string>('')
-
+const CommandInput: React.VFC<Props> = ({ value, onChange, onSubmit }) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setValue(e.target.value)
+    onChange && onChange(e.target.value)
   }
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -53,8 +53,7 @@ const CommandInput: React.VFC<Props> = ({ onSubmit }) => {
   }
 
   const submit = () => {
-    onSubmit && onSubmit(value)
-    setValue('')
+    onSubmit && onSubmit()
   }
 
   return (
