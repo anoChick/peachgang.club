@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import CommandInput from '../components/CommandInput'
 import { motion } from 'framer-motion'
@@ -9,12 +9,23 @@ import nightWithStars from '@iconify/icons-twemoji/night-with-stars'
 import cityscapeIcon from '@iconify/icons-twemoji/cityscape'
 import tornadoIcon from '@iconify/icons-twemoji/tornado'
 import twitterIcon from '@iconify/icons-logos/twitter'
+import radioactiveIcon from '@iconify/icons-twemoji/radioactive'
 import ActionIcon from '../components/AcionIcon'
+import Roulette from '../components/Roulette'
 
 type StyledProps = {
   isNight: boolean
 }
-
+const ActionHeader = styled.div`
+  position: fixed;
+  font-size: 16px;
+  top: 0;
+  right: 0;
+  padding: 4px 8px;
+  z-index: 10;
+  font-weight: 100;
+  text-align: right;
+`
 const Title = styled.h1<StyledProps>`
   font-size: 40px;
   font-weight: 100;
@@ -46,10 +57,20 @@ const CommandInputWrap = styled.div`
 const IndexPage: React.FC = () => {
   const [commandInputIsOpen, setCommandInputIsOpen] = useState<boolean>(false)
   const [isNight, setIsNight] = useState<boolean>(false)
+  const [isOpenRoulette, setIsOpenRoulette] = useState<boolean>(false)
 
   const [rotate, setRotate] = useState<number>(0)
   const [commandText, setCommandText] = useState<string>('')
-
+  const [hyc, setHyc] = useState<number>(0)
+  useEffect(() => {
+    if (!hyc) return
+    window.localStorage.setItem('club.peachgung.hyc', `${hyc}`)
+  }, [hyc])
+  useEffect(() => {
+    const h = +(window.localStorage.getItem('club.peachgung.hyc') ?? 0)
+    window.localStorage.setItem('club.peachgung.hyc', `${h}`)
+    setHyc(h)
+  }, [])
   const handleClickPeachGang = () => {
     setCommandInputIsOpen(true)
   }
@@ -63,6 +84,10 @@ const IndexPage: React.FC = () => {
         break
       case 'spin':
         setRotate(rotate + 360 * 20)
+        break
+      case 'roulette':
+        setIsOpenRoulette(true)
+        setHyc(hyc - 10)
         break
       case 'twitter':
         window.open('https://twitter.com/peachgangclub', '_blank')
@@ -84,6 +109,7 @@ const IndexPage: React.FC = () => {
         url={'/'}
       />
       <div>
+        <ActionHeader>{hyc} HYC</ActionHeader>
         <ActionContainer isNight={isNight}>
           {commandInputIsOpen && (
             <>
@@ -91,6 +117,7 @@ const IndexPage: React.FC = () => {
               <ActionIcon text="night-mode" icon={nightWithStars} onClick={handleClickActionIcon} />
               <ActionIcon text="day-mode" icon={cityscapeIcon} onClick={handleClickActionIcon} />
               <ActionIcon text="spin" icon={tornadoIcon} onClick={handleClickActionIcon} />
+              <ActionIcon text="roulette" icon={radioactiveIcon} onClick={handleClickActionIcon} />
             </>
           )}
 
@@ -133,6 +160,14 @@ const IndexPage: React.FC = () => {
           </CommandInputWrap>
         </ActionContainer>
       </div>
+      {isOpenRoulette && (
+        <Roulette
+          onFinish={(reward) => {
+            setHyc(hyc + reward)
+            setIsOpenRoulette(false)
+          }}
+        />
+      )}
     </Layout>
   )
 }

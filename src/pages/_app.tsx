@@ -14,6 +14,10 @@ const App = ({ Component, pageProps }: AppProps) => (
         href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100;300;400;700&display=swap"
         rel="stylesheet"
       />
+      <link
+        href="https://fonts.googleapis.com/css2?family=Hachi+Maru+Pop&display=swap"
+        rel="stylesheet"
+      />
     </Head>
     <ThemeProvider theme={theme}>
       <Component {...pageProps} />
