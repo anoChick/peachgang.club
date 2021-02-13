@@ -68,6 +68,11 @@ const IndexPage: React.FC = () => {
   }, [hyc])
   useEffect(() => {
     const h = +(window.localStorage.getItem('club.peachgung.hyc') ?? 0)
+    if (h === Infinity) {
+      alert('ハッキングやめてください')
+      setHyc(-99999999)
+      return
+    }
     window.localStorage.setItem('club.peachgung.hyc', `${h}`)
     setHyc(h)
   }, [])
