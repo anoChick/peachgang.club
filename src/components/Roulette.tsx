@@ -92,105 +92,36 @@ const PanelText = styled.span`
 `
 
 const generatePanelData = () => {
-  const panelData = new Array(36).fill('').map((_, i) => {
-    return {
-      num: i,
-      color: randomcolor({ luminosity: 'light' }),
-      text: `やわらかい桃`,
-      reward: 5,
-      center: true,
-      link: null,
-      image: null,
-      flavorText: '',
+  const contents = JSON.parse(window.localStorage.getItem('club.peachgung.roulette.contents'))
+  return contents.map((c, i) => {
+    if (!c.color) {
+      if (i === 0 || contents[i - 1].title !== c.title) {
+        c.color = randomcolor({ luminosity: 'light' })
+      } else {
+        c.color = contents[i - 1].color
+      }
     }
-  })
+    const checkCenter = () => {
+      let r = 0
+      // eslint-disable-next-line no-constant-condition
+      while (true) {
+        const beforeItem = contents[i - r]
+        const afterItem = contents[i + r]
+        if (afterItem?.title === beforeItem?.title && afterItem?.title === c.title) {
+          r++
+          continue
+        }
 
-  panelData[20].text = '硬桃'
-  panelData[20].reward = 200
+        if (afterItem?.title !== c.title && beforeItem?.title !== c.title) return true
 
-  panelData[22].text = 'ハピネス'
-  panelData[22].reward = 2000
-  panelData[28].text = '小吉'
-  panelData[28].reward = 20
-  panelData[1].text = 'かれいの煮付け'
-  panelData[1].reward = 800
-
-  const tflist = [2, 3, 4, 5, 6]
-  const tfColor = randomcolor({ luminosity: 'light' })
-  tflist.forEach((i) => {
-    panelData[i].text = '🤔キーキャップ'
-    panelData[i].center = i === 4
-    panelData[i].reward = 11
-    panelData[i].color = tfColor
-    panelData[i].link = 'https://booth.pm/ja/items/1765414'
-
-    panelData[i].image =
-      'https://booth.pximg.net/d56dfefc-5ad8-4bd1-9fb8-4e98c6c30828/i/1765414/ca1df9e9-149c-4740-8a5a-01ef5a16683c_base_resized.jpg'
+        return false
+      }
+    }
+    c.center = checkCenter()
+    return c
   })
-  const rublist = [7, 8, 9]
-  const rubColor = randomcolor({ luminosity: 'light' })
-  rublist.forEach((i) => {
-    panelData[i].text = 'ルブ'
-    panelData[i].center = i === 8
-    panelData[i].reward = 2
-    panelData[i].color = rubColor
-    panelData[i].flavorText = 'ルブおいしい！！'
-    panelData[i].image = '/images/rub.jpeg'
-
-    panelData[i].link = 'https://yushakobo.jp/shop/lubricants/'
-  })
-  const kyomlist = [10, 11, 12, 13, 14, 15, 16]
-  kyomlist.forEach((i) => {
-    panelData[i].text = '虚無'
-    panelData[i].center = i === 13
-    panelData[i].reward = 0
-    panelData[i].color = '#aaa'
-  })
-  panelData[17].text = '硬桃'
-  panelData[17].reward = 200
-  const hiyopisList = [19, 20, 21]
-  const hiyopisColor = randomcolor({ luminosity: 'light' })
-  hiyopisList.forEach((i) => {
-    panelData[i].text = 'ひよピス'
-    panelData[i].center = i === 20
-    panelData[i].reward = 20
-    panelData[i].image = '/images/hiyopis.jpg'
-    panelData[i].flavorText = 'ひよこにピース！ひよピス'
-    panelData[i].color = hiyopisColor
-  })
-
-  const uhmwpeList = [23, 24, 25, 26, 27]
-  const uhmwpeColor = randomcolor({ luminosity: 'light' })
-  uhmwpeList.forEach((i) => {
-    panelData[i].text = 'UHMWPE'
-    panelData[i].center = i === 25
-    panelData[i].reward = 20
-    panelData[i].flavorText = 'ｩﾑｩﾋﾟｪ〜'
-    panelData[i].image =
-      'https://booth.pximg.net/6cc8f587-fe7f-4a8d-8156-edc44b3d58c5/i/2344548/5a8aebcf-ab8d-4673-94fb-8d48dc961da8_base_resized.jpg'
-    panelData[i].link = 'https://booth.pm/ja/items/2344548'
-    panelData[i].color = uhmwpeColor
-  })
-  const tthList = [29, 30, 31]
-  const tthColor = randomcolor({ luminosity: 'light' })
-  tthList.forEach((i) => {
-    panelData[i].text = '戸田広'
-    panelData[i].center = i === 30
-    panelData[i].reward = -5
-    panelData[i].color = tthColor
-  })
-  const tjList = [33, 34, 35]
-  const tjColor = randomcolor({ luminosity: 'light' })
-  tjList.forEach((i) => {
-    panelData[i].text = 'たのしい人生'
-    panelData[i].center = i === 34
-    panelData[i].reward = 50
-    panelData[i].color = tjColor
-  })
-
-  return panelData
 }
-
+;('')
 type Props = {
   onFinish?: (reward: number) => void
 }
@@ -199,14 +130,14 @@ const Roulette: React.VFC<Props> = ({ onFinish }) => {
   const pgRef = useRef<HTMLImageElement>()
   const [panelData] = useState(generatePanelData())
   const [result, setResult] = useState<{
-    num: number
+    number: number
     color: string
-    text: string
+    title: string
     reward: number
     center: boolean
     link: string | null
     image: string | null
-    flavorText: string
+    text: string
   } | null>(null)
 
   useEffect(() => {
@@ -255,14 +186,14 @@ const Roulette: React.VFC<Props> = ({ onFinish }) => {
           {panelData.map((d) => {
             return (
               <Panel
-                key={d.num}
+                key={d.number}
                 style={{
                   borderTop: `200px solid ${d.color}`,
-                  transform: `rotate(${d.num * 10}deg)`,
+                  transform: `rotate(${d.number * 10}deg)`,
                 }}
               >
                 <PanelText>
-                  {d.center ? d.text : ''}
+                  {d.center ? d.title : ''}
                   <br />
                 </PanelText>
               </Panel>
@@ -272,7 +203,7 @@ const Roulette: React.VFC<Props> = ({ onFinish }) => {
         </CirclePanel>
         {result && (
           <Result>
-            {result.text}
+            {result.title}
             <br />
             <div>
               <small style={{ fontSize: 14 }}>+{result.reward}HYC</small>
@@ -281,14 +212,14 @@ const Roulette: React.VFC<Props> = ({ onFinish }) => {
               <div>
                 <img
                   src={result.image}
-                  alt={result.text}
+                  alt={result.title}
                   height={140}
                   style={{ borderRadius: 10, display: 'inline-block', margin: 16 }}
                 />
               </div>
             )}
             <div>
-              <FlavorText>{result.flavorText}</FlavorText>
+              <FlavorText>{result.text}</FlavorText>
             </div>
             {result.link && (
               <div>

@@ -67,6 +67,29 @@ const IndexPage: React.FC = () => {
     window.localStorage.setItem('club.peachgung.hyc', `${hyc}`)
   }, [hyc])
   useEffect(() => {
+    fetch(
+      'https://docs.google.com/spreadsheets/d/e/2PACX-1vR04bDEoPZUExwsnXZsxzDx5Ii09DM_U4IanJD-NASu1yrXyp_rYp6EGUuiUsSYF-3rwwlBwzTPEqQi/pub?output=csv'
+    ).then((res) => {
+      res.text().then((t) => {
+        const data = t.split('\n').map((r) => {
+          const d = r.split(',')
+          return {
+            number: +d[0],
+            title: d[1],
+            reward: d[2] == '' ? 0 : +d[2],
+            image: d[3] == '' ? null : d[3],
+            link: d[4] == '' ? null : d[4],
+            text: d[5] == '' ? null : d[5],
+            color: d[6] == '' || d[6].length === 1 ? null : d[6],
+          }
+        })
+
+        data.shift()
+        window.localStorage.setItem('club.peachgung.roulette.contents', JSON.stringify(data))
+      })
+    })
+  }, [commandInputIsOpen])
+  useEffect(() => {
     const h = +(window.localStorage.getItem('club.peachgung.hyc') ?? 0)
     if (h === Infinity) {
       alert('ハッキングやめてください')
@@ -79,6 +102,7 @@ const IndexPage: React.FC = () => {
   const handleClickPeachGang = () => {
     setCommandInputIsOpen(true)
   }
+
   const handleSubmit = () => {
     switch (commandText) {
       case 'night-mode':
