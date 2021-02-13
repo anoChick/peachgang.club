@@ -66,13 +66,13 @@ const CirclePanel = styled.div`
   position: relative;
   width: 400px;
   height: 400px;
-  transform-origin: 17.5px 200px;
+  transform-origin: 18px 200px;
 `
 const Panel = styled.div`
   position: absolute;
-  border-right: 17.5px solid transparent;
-  border-left: 17.5px solid transparent;
-  transform-origin: 17.5px 200px;
+  border-right: 18px solid transparent;
+  border-left: 18px solid transparent;
+  transform-origin: 18px 200px;
 `
 const PGImage = styled.img`
   position: absolute;
@@ -84,7 +84,7 @@ const PGImage = styled.img`
 const PanelText = styled.span`
   position: absolute;
   top: -190px;
-  left: -8px;
+  left: -9px;
   font-size: 16px;
   line-height: 18px;
   -ms-writing-mode: tb-rl;
