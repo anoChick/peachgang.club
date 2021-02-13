@@ -33,7 +33,7 @@ const ActionIcon: React.VFC<Props> = ({ text, icon, onClick }) => {
     let vY = Math.random() * 4 - 2
     let r = 0
     let vR = Math.random() * 4 - 2
-    const size = Math.floor(Math.random() * 50 + 50)
+    const size = Math.floor(Math.random() * 50 + 30)
     const timeout = setInterval(() => {
       const elem = ref.current
       if (x === null) x = elem.parentElement.clientWidth / 2 - size / 2
@@ -58,7 +58,7 @@ const ActionIcon: React.VFC<Props> = ({ text, icon, onClick }) => {
       elem.style.width = `${size}px`
       elem.style.height = `${size}px`
       elem.style.display = 'inline-block'
-    }, 20)
+    }, 25)
 
     return () => {
       clearInterval(timeout)
