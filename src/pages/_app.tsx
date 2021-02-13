@@ -3,7 +3,8 @@ import Head from 'next/head'
 import { ThemeProvider } from 'styled-components'
 import { theme } from '../styles/theme'
 import '../styles/global.css'
-
+import ReactGA from 'react-ga'
+ReactGA.initialize('UA-48876391-9')
 const App = ({ Component, pageProps }: AppProps) => (
   <>
     <Head>

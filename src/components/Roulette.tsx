@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import randomcolor from 'randomcolor'
+import ReactGA from 'react-ga'
 const Root = styled.div`
   position: fixed;
   top: 0;
@@ -161,6 +162,12 @@ const Roulette: React.VFC<Props> = ({ onFinish }) => {
         if (index >= 36) index = 0
         setResult(panelData[index])
         setTimeout(() => {
+          ReactGA.event({
+            category: '統計データ',
+            action: 'ルーレット結果',
+            label: panelData[index].title,
+            value: panelData[index].reward,
+          })
           onFinish && onFinish(panelData[index].reward)
         }, 3000)
       }

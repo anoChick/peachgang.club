@@ -12,6 +12,7 @@ import twitterIcon from '@iconify/icons-logos/twitter'
 import radioactiveIcon from '@iconify/icons-twemoji/radioactive'
 import ActionIcon from '../components/AcionIcon'
 import Roulette from '../components/Roulette'
+import ReactGA from 'react-ga'
 
 type StyledProps = {
   isNight: boolean
@@ -104,6 +105,13 @@ const IndexPage: React.FC = () => {
   }
 
   const handleSubmit = () => {
+    if (commandText !== '') {
+      ReactGA.event({
+        category: 'ユーザーアクション',
+        action: 'コマンドを実行',
+        label: commandText,
+      })
+    }
     switch (commandText) {
       case 'night-mode':
         setIsNight(true)
